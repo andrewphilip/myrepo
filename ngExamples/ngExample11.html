@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-route.min.js"></script>
+<script src="//cdn.rawgit.com/jpillora/xdomain/0.7.2/dist/xdomain.min.js"></script>
+<script>
+
+
+		var app=angular.module("app",['ngRoute']);
+		app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider){
+			$httpProvider.defaults.useXDomain=true;
+			delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
+			$routeProvider
+			.when('/',
+					{
+						templateUrl: 'pages/home.jsp',
+						controller: 'homeController'
+					}
+				  )
+			.when('/resource',
+					{
+						templateUrl: 'resource.jsp',
+						controller: 'homeController'
+					}
+				  )
+			.when('/about',
+					{
+						templateUrl: 'about.jsp',
+						controller: 'homeController'
+					}
+				  )
+			 .otherwise({redirectTo: '/'});
+		}]);
+
+		app.controller('homeController', function($scope){
+			console.log('inside home controller');
+			$scope.pgContent='Agnus Dei, have mercy on us.';
+		});
+
+		app.controller('resController', function($scope){
+			console.log('inside resource controller');
+			$scope.pgContent='Deo Gratias, for all the blessings.';
+		});
+
+		app.controller('aboutController', function($scope){
+			console.log('inside about controller');
+			$scope.pgContent='I am the handmaid of the Lord.';
+		});
+
+
+	</script>
+</head>
+<body ng-controller="homeController">
+        <div class="navcont">
+        	<ul>
+        		<li id="home" class="listItems" ><a href="#">Home</a></li>
+        		<li id="res" class="listItems" ><a href="#/resource">Resources</a></li>
+        		<li id="about" class="listItems" ><a href="#/about">About</a></li>
+        	</ul>
+        </div>
+
+		<div>
+			<ng-view></ng-view>
+		</div>
+
+
+
+</body>
+</html>

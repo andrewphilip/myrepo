@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+	<style type="text/css">
+	.msgbox {
+		background-color:blue;
+		color:white;
+	}
+</style>
+</head>
+<body>
+	<h4>Sign-up Form</h4>
+	<form ng-controller="signUpController"  name='userForm'>
+		<div ng-show='message' ng-class='{msgbox: true}'>{{message}}</div>
+		<table>
+			<tr>
+				<td>First Name:</td>
+				<td><input name='firstName' ng-model='user.first' required></td>
+			</tr>
+			<tr>
+				<td>Last Name:</td>
+				<td><input name='lastName' ng-model='user.last' required></td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><input type='email' ng-model='user.email' required></td>
+			</tr>
+			<tr>
+				<td>Age:</td>
+				<td><input type='number' name='age' ng-model='user.age' min='15' max='99'></td>
+			</tr>
+
+		</table>
+		<div><button ng-click='validateUser()' ng-disabled='!userForm.$valid'>Submit</button></div>
+	</form>
+
+	<script>
+		var app=angular.module("app",[]);
+
+		app.controller('signUpController', function($scope){
+
+			$scope.validateUser = function(){
+				$scope.message = "Thank you, "+$scope.user.first+", we registered you.";
+				console.log('success registering..')
+			};
+
+		});
+
+	</script>
+</body>
+</html>

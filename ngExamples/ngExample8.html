@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+    <script src="http://code.highcharts.com/stock/highstock.src.js"></script>
+	<script src= "javascript/highcharts-ng.min.js"></script>
+
+</head>
+<body>
+
+	<h4>Highchart App- AngularJS</h4>
+
+	<div ng-app="app">
+			<div ng-controller="hcCntrl">
+				<div class="row">
+					<div class="span9">
+						<div class="row">
+							<highchart class="chart" config="chartConfig" class="span9" ></highchart>
+						</div>
+
+					</div>
+
+					</div>
+				</div>
+	</div>
+
+	<script>
+		var app=angular.module("app",['highcharts-ng']);
+
+		app.controller('hcCntrl', function($scope){
+
+			$scope.chartSeries=[
+									{name:"Randomly generated data", data:[12,16,19,5,35,27,13]}
+								];
+
+			$scope.chartConfig={
+				options:{
+					chart:{type:'pie'}, /* areaspline , bar, line, spline,area,scatter,column  */
+					//plotOptions:{series:{stacking:''}}
+				},
+				series: $scope.chartSeries,
+				title:{ text: 'Random Test Chart'},
+				//credits:{enabled:true},
+				loading:false,
+				size:{}
+			}
+
+		});
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/angular.treeview.css">
+	<script type="text/javascript">
+		/*
+			@license Angular Treeview version 0.1.6
+			ⓒ 2013 AHN JAE-HA http://github.com/eu81273/angular.treeview
+			License: MIT
+		*/
+
+		(function(f){f.module("angularTreeview",[]).directive("treeModel",function($compile){return{restrict:"A",link:function(b,h,c){var a=c.treeId,g=c.treeModel,e=c.nodeLabel||"label",d=c.nodeChildren||"children",e='<ul><li data-ng-repeat="node in '+g+'"><i class="collapsed" data-ng-show="node.'+d+'.length && node.collapsed" data-ng-click="'+a+'.selectNodeHead(node)"></i><i class="expanded" data-ng-show="node.'+d+'.length && !node.collapsed" data-ng-click="'+a+'.selectNodeHead(node)"></i><i class="normal" data-ng-hide="node.'+
+		d+'.length"></i> <span data-ng-class="node.selected" data-ng-click="'+a+'.selectNodeLabel(node)">{{node.'+e+'}}</span><div data-ng-hide="node.collapsed" data-tree-id="'+a+'" data-tree-model="node.'+d+'" data-node-id='+(c.nodeId||"id")+" data-node-label="+e+" data-node-children="+d+"></div></li></ul>";a&&g&&(c.angularTreeview&&(b[a]=b[a]||{},b[a].selectNodeHead=b[a].selectNodeHead||function(a){a.collapsed=!a.collapsed},b[a].selectNodeLabel=b[a].selectNodeLabel||function(c){b[a].currentNode&&b[a].currentNode.selected&&
+		(b[a].currentNode.selected=void 0);c.selected="selected";b[a].currentNode=c}),h.html('').append($compile(e)(b)))}}})})(angular);
+
+	</script>
+</head>
+<body>
+
+	<h4>Treeview App- AngularJS</h4>
+
+	<div ng-app="app">
+			<div ng-controller="tvCntrl">
+					<div>
+						<span>Selected Node: {{abc.currentNode.name}}</span>
+					</div>
+
+					<div data-angular-treeview="true"
+							data-tree-id="abc"
+							data-tree-model="geoloc"
+							data-node-id="code"
+							data-node-label="name"
+							data-node-children="subplace">
+					</div>
+			</div>
+	</div>
+
+	<script>
+		var app=angular.module("app", ['angularTreeview']);
+
+		app.controller('tvCntrl', function($scope){
+
+			$scope.geoloc =[
+								{"name": "United States", "code": "US",
+									"subplace": [
+												{"name":"Virginia", "code":"VA",
+														"subplace":[
+																	{"name":"Fairfax", code:"FFX"},
+																	{"name":"Arlington", code:"ARL"},
+																	{"name":"Herndon", code:"HRN"},
+																	{"name":"Vienna", code:"VNA"}
+																	]
+
+												},
+												{"name":"Massachusetts", "code":"MA",
+														"subplace":[
+																	{"name":"Quincy", code:"QNC"},
+																	{"name":"Cambridge", code:"CMB"},
+																	{"name":"Framingham", code:"FRM"},
+																	{"name":"Natick", code:"NAT"}
+																	]
+
+												}
+											   ]
+								},
+								{"name": "India", "code": "IN",
+									"subplace": [
+												{"name":"TamilNadu", "code":"TN",
+														"subplace":[
+																	{"name":"Chennai", code:"CHN"},
+																	{"name":"Coimbatore", code:"CBT"},
+																	{"name":"Madurai", code:"MAD"},
+																	{"name":"Salem", code:"SAL"}
+																	]
+
+												},
+												{"name":"Karnataka", "code":"KA",
+														"subplace":[
+																	{"name":"Bangalore", code:"BLR"},
+																	{"name":"Mysore", code:"MYR"},
+																	{"name":"Bellary", code:"BEL"},
+																	{"name":"Udupi", code:"UDP"}
+																	]
+
+												}
+											   ]
+								}
+
+
+							];
+			console.log($scope.geoloc);
+
+			$scope.$watch( 'abc.currentNode', function( newObj, oldObj ) {
+				if( $scope.abc && angular.isObject($scope.abc.currentNode) ) {
+					console.log( 'Node Selected!!' );
+					console.log( $scope.abc.currentNode.code );
+				}
+			}, false);
+
+
+		});
+	</script>
+
+</body>
+</html>

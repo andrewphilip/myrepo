@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+	Data Grid
+-->
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+	<!-- script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-touch.js">< /script>
+	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-animate.js">< /script -->
+	<script src= "javascript/pdfmake.js"></script>
+	<script src= "javascript/vfs_fonts.js"></script>
+	<script src= "javascript/ui-grid-unstable.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/ui-grid-unstable.min.css">
+	<style>
+	.gridStyle {
+    	width: 600px;
+    	height: 300px;
+	}
+	</style>
+</head>
+<body>
+
+	<h4>DataGrid App- AngularJS</h4>
+
+	<div ng-app="app">
+			<div ng-controller="dgCntrl">
+					<div class="gridStyle" ui-grid="gridOptions" ui-grid-selection ui-grid-pagination  ui-grid-exporter >
+					</div>
+			</div>
+	</div>
+	<script>
+		var app=angular.module("app",['ui.grid','ui.grid.pagination','ui.grid.selection', 'ui.grid.exporter']);
+
+		app.controller('dgCntrl', function($scope){
+
+			$scope.dgData = [
+									{country:"United States", capital: "Washington,D.C."},
+									{country:"United Kingdom", capital: "London"},
+									{country:"India", capital: "New Delhi"},
+									{country:"China", capital: "Beijing"},
+									{country:"Japan", capital: "Tokyo"},
+									{country:"Brazil", capital: "Brasilia"},
+									{country:"Canada", capital: "Ottawa"},
+									{country:"Italy", capital: "Rome"},
+									{country:"Australia", capital: "Canberra"},
+									{country:"Argentina", capital: "Buenos Aires"},
+									{country:"Germany", capital: "Berlin"},
+									{country:"Ireland", capital: "Dublin"},
+									{country:"France", capital: "Paris"},
+									{country:"Spain", capital: "Madrid"},
+									{country:"Saudi Arabia", capital: "Riyadh"},
+									{country:"Switzerland", capital: "Bern"},
+									{country:"Turkey", capital: "Ankara"},
+									{country:"Poland", capital: "Warsaw"},
+									{country:"Philippines", capital: "Manila"},
+									{country:"Qatar", capital: "Doha"},
+									{country:"Singapore", capital: "Singapore"},
+									{country:"Malaysia", capital: "Kuala Lumpur"},
+									{country:"Mexico", capital: "Mexico City"},
+									{country:"Norway", capital: "Oslo"},
+									{country:"Kenya", capital: "Nairobi"}
+
+								];
+
+			$scope.gridOptions ={
+									data: $scope.dgData,
+									enablePaginationControls:true,
+									enableFiltering: true,
+									enableGridMenu: true,
+									enableSelectAll: true,
+									exporterCsvFilename: 'cclist.csv',
+									paginationPageSize: 10,
+									columnDefs:[{name: 'country'},{name: 'capital'}],
+									exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+								    exporterPdfDefaultStyle: {fontSize: 9},
+								    exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+								    exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+								    exporterPdfHeader: { text: "Country-Capital", style: 'headerStyle' },
+								    exporterPdfFooter: function ( currentPage, pageCount ) {
+									      return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+								    },
+								    exporterPdfCustomFormatter: function ( docDefinition ) {
+										docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+										docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+										return docDefinition;
+									},
+								    exporterPdfOrientation: 'portrait',
+								    exporterPdfPageSize: 'LETTER',
+								    exporterPdfMaxGridWidth: 500,
+									onRegisterApi: function(gridApi){
+										$scope.gridApi = gridApi;
+									}
+
+								};
+
+		});
+	</script>
+
+</body>
+</html>

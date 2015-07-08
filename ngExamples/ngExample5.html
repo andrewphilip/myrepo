@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!-- GEOip using ngResource  Author: Andrew Philip-->
+<html>
+<head>
+<meta name="author"	 content="Andrew Philip">
+<meta name="description"	content="demo of ngResource">
+<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.min.js"></script>
+<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+</head>
+<body ng-app='GeoIPApp'>
+
+	<div ng-controller='geoipController'>
+			<table>
+				<tr>
+					<th>GeoParameters</th>
+					<th></th>
+				</tr>
+				<tr>
+					<td>IP Address:</td>
+					<td>{{geoip.ip}}</td>
+				</tr>
+				<tr>
+					<td>Longitude:</td>
+					<td>{{geoip.longitude}}</td>
+				</tr>
+				<tr>
+					<td>Latitude:</td>
+					<td>{{geoip.latitude}}</td>
+				</tr>
+				<tr>
+					<td>Continent Code:</td>
+					<td>{{geoip.continent_code}}</td>
+				</tr>
+				<tr>
+					<td>Country Code:</td>
+					<td>{{geoip.country_code}}</td>
+				</tr>
+				<tr>
+					<td>Country:</td>
+					<td>{{geoip.country}}</td>
+				</tr>
+				<tr>
+					<td>Timezone:</td>
+					<td>{{geoip.timezone}}</td>
+				</tr>
+				<tr>
+					<td>Area Code:</td>
+					<td>{{geoip.area_code}}</td>
+				</tr>
+
+			</table>
+
+			<div >
+					<h4>Weather Info</h4>
+					<p>
+						<input type='text' ng-model="city"/>
+						<button ng-click="getWeather()">Get-Weather-Info</button>
+					</p>
+					<div ng-show="showWeather">
+						City: {{weather.name}}
+						<table>
+							<tr>
+								<th></th>
+								<th>Weather</th>
+							</tr>
+							<tr>
+								<td>Country:</td>
+								<td>{{weather.sys.country}}	</td>
+							</tr>
+							<tr>
+								<td>Sunrise:</td>
+								<td>{{weather.sys.sunrise}}	</td>
+							</tr>
+							<tr>
+								<td>Sunset:</td>
+								<td>{{weather.sys.sunset}}	</td>
+							</tr>
+							<tr>
+								<td>Long/Latitude:</td>
+								<td>{{weather.coord.lon}} / {{weather.coord.lat}}	</td>
+							</tr>
+							<tr>
+								<td>Main:</td>
+								<td>{{weather.weather[0].main}}	</td>
+							</tr>
+							<tr>
+								<td>Description:</td>
+								<td>{{weather.weather[0].description}}</td>
+							</tr>
+						</table>
+						<table>
+							<tr>
+								<th></th>
+								<th>Temp/pressure/humidity</th>
+							</tr>
+
+							<tr>
+								<td>Temp:</td>
+								<td>{{weather.main.temp}}</td>
+							</tr>
+							<tr>
+								<td>Min Temperature:</td>
+								<td>{{weather.main.temp_min}}</td>
+							</tr>
+							<tr>
+								<td>Max Temperature:</td>
+								<td>{{weather.main.temp_max}}</td>
+							</tr>
+							<tr>
+								<td>Humidity:</td>
+								<td>{{weather.main.humidity}}</td>
+							</tr>
+							<tr>
+								<td>Pressure:</td>
+								<td>{{weather.main.pressure}}</td>
+							</tr>
+						</table>
+					</div>
+			</div>
+	</div>
+
+	<script>
+		var app=angular.module("GeoIPApp",['ngResource']);
+
+		/***************************************************************************************************
+				Usage: $resource(url, [paramDefaults], [actions], options);
+
+				{action1: {method:?, params:?, isArray:?, headers:?, ...},
+				 action2: {method:?, params:?, isArray:?, headers:?, ...},
+ 				...}
+
+				***Resource class object with default set of resource actions optionally extended with custom actions too.
+				{ 'get':    {method:'GET'},
+				  'save':   {method:'POST'},
+				  'query':  {method:'GET', isArray:true},
+				  'remove': {method:'DELETE'},
+				  'delete': {method:'DELETE'} };  [ google IP: 74.125.196.104 ]
+	************************************************************************************************************/
+		app.factory('GeoIP', function($resource){
+			return $resource('http://www.telize.com/geoip/74.125.196.104',{},{
+				'query': {method:'GET', isArray:false}
+			});
+
+		});
+
+		app.factory('Weather', function($resource){
+				return $resource('http://api.openweathermap.org/data/2.5/weather/:city',{ city:'@q'},{
+					query:{
+							isArray:false
+						  }
+				}
+			);
+		});
+
+		app.controller('geoipController', function($scope, $q, GeoIP,Weather){
+			$scope.geoip={};
+			$scope.city;
+			$scope.weather;
+			$scope.getWeather = getWeather;
+			$scope.showWeather = false;
+
+			var promise=init();
+			promise.then(function(response) {
+				$scope.geoip = response;
+				console.log($scope.geoip.ip);
+			}, function(errorPayload) {
+				console.log('error getting geoip', errorPayload);
+			}
+			);
+
+
+
+			function init(){
+				  var deferred=$q.defer();
+				  var result = GeoIP.query(function(){
+											deferred.resolve(result);
+											console.log('promise resolved...');
+								  });
+				return deferred.promise;
+			}
+
+			function weatherInit(){
+				var deferred = $q.defer();
+				var result= Weather.query({q: $scope.city }, function(){
+											deferred.resolve(result);
+											console.log('weather data returned...'+ result.name);
+										 });
+				return deferred.promise;
+			}
+
+			function getWeather(){
+				var wpromise = weatherInit();
+				wpromise.then(
+						function(res){
+							$scope.weather = res;
+							$scope.showWeather =true;
+						},
+						function(err){
+							console.log('error obtaining weather details...');
+						}
+				);
+			}
+
+		});
+
+	</script>
+
+</body>
+</html>

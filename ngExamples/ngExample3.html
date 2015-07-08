@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+<style>
+	table th, td {
+		border: 5px solid grey;
+		padding: 5px;
+	}
+	table tr:nth-child(odd) {
+		background-color:#f1f1f1;
+	}
+	table tr:nth-child(even) {
+		background-color:white;
+	}
+</style>
+</head>
+<body>
+
+	<div ng-controller="custCtrl">
+
+		<table>
+			<tr ng-repeat="cust in users">
+				<td>{{cust.Name}}</td>
+				<td>{{cust.Country}}</td>
+			</tr>
+		</table>
+	</div>
+
+	<script>
+		var app=angular.module("app",[]);
+
+		app.controller('custCtrl', function($scope,$http){
+			$http.get("http://www.w3schools.com/website/customers_mysql.php")
+				.success(function(res){
+					$scope.users=res;
+				});
+		});
+
+	</script>
+
+</body>
+</html>

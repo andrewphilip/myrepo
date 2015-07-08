@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+</head>
+<body ng-app='custapp'>
+
+	<div ng-controller='custController'>
+			Search by Name: <input ng-model="nameSearch">
+			<table>
+				<tr><th ng-click="doSort('name')">Name</th><th ng-click="doSort('country')">Country</th></tr>
+				<tr ng-repeat="c in customers |filter: nameSearch | orderBy:sort:toggle">  <!--  filter:{country: 'france'} -->
+					<td>{{c.name}}</td>
+					<td>{{c.country}}</td>
+				</tr>
+			</table>
+
+			<hr/>
+
+			Customer Name: <input type="text" ng-model="newCustomer.name"/><br/>
+			Customer Country: <input type="text" ng-model="newCustomer.country"/><br/>
+			<button ng-click="insert()">Add Customer</button>
+
+	</div>
+
+	<script>
+		var app=angular.module("custapp",[]);
+		var customers=[
+					{name:'Ignatius of Loyola', country:'spain' },
+					{name:'Francis Xavier', country:'spain'},
+					{name:'Francis deSales', country:'france'},
+					{name:'John Vianney', country:'france'},
+					{name:'Vincent de Paul', country:'france'},
+					{name:'Anthony the Great', country:'egypt'},
+					{name:'Elizabeth Ann Seton', country:'america'},
+					{name:'Kateri Tekakwitha', country:'america'},
+					{name:'John Neumann', country:'america'},
+					{name:'Charles Borromeo', country:'italy'},
+					{name:'John Bosco', country:'italy'},
+					{name:'Catherine of Sienna', country:'italy'},
+					{name:'Francis of Assisi', country:'italy'},
+					{name:'Saint Alphonsa', country:'india'}
+				       ];
+
+		app.value('customers', customers);
+
+		app.factory('custFactory', function(){
+			var factory={};
+			factory.getCustomers = function(){
+				console.log('inside custFactory()');
+				return customers;
+			}
+			return factory;
+		});
+
+		app.service('custService', function(){
+			this.getCustomers = function(){
+				console.log('inside custService()');
+				return customers;
+			};
+		});
+
+		app.controller('custController', function($scope, custFactory, custService){
+			$scope.customers=[];
+			init();
+			$scope.insert = insertCustomer;
+			$scope.sort="name";
+			$scope.toggle=false;
+
+			function init(){
+				$scope.customers = custFactory.getCustomers();
+				//$scope.customers = custService.getCustomers();
+			}
+
+			function insertCustomer(){
+				$scope.customers.push({name:$scope.newCustomer.name, country: $scope.newCustomer.country});
+				$scope.newCustomer.name='';
+				$scope.newCustomer.country='';
+			}
+
+			$scope.doSort = function(val){
+				if($scope.sort == val){
+					$scope.toggle = !$scope.toggle;
+				}
+				else{
+					$scope.sort = val;
+					$scope.toggle=false;
+				}
+			}
+		});
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html ng-app='wogApp'>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/styles/nav.css">
+		<style>
+			.cont1{
+				width:95%;
+				height:450px;
+				border: 3px solid gray;
+				margin-left:auto;
+				margin-right:auto;
+				overflow:auto;
+				border-radius:7px;
+				box-shadow: 2px 2px 5px #202020;
+			}
+			h2 {
+				background:linear-gradient(white, lightgray);
+				border-radius: 5px;
+				width:20%;
+			}
+			.highlighted {
+				background:yellow;
+			}
+			.bookClass{
+				color:blue;
+				text-align:center;
+				font-size:18px;
+				font-weight:bold;
+			}
+			.chver{
+				font-style:italic;
+				font-size:16px;
+				font-weight:bold;
+				width:10%;
+			}
+			.oddRow {
+				background:linear-gradient(white, lightgray);
+			}
+			.srchRes {
+				background:linear-gradient(white, lightgray);
+				float:right;
+			}
+			footer {
+				width: 95%;
+				background: linear-gradient(white, lightgray);
+				float: left;
+				margin: 0 0 .5% 0;
+				border-radius: 5px;
+				box-shadow: 5px 5px 10px #202020
+			}
+			.clock {
+				background: linear-gradient(gray, lightgray);
+				border:1px solid black;
+				color: white;
+				border-radius: 5px;
+				float:right;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="hdrbar"></div>
+		<div id="outerBox">
+		<div ng-controller="clockCtrl" align="center" >
+				<div id="navbar" align="center">
+						<ul>
+							<li id="home" class="navitem" onclick="setMenuActive('home')" ><a class="navlnk"  href="/home">Home</a></li>
+							<li id="resource" class="navitem" onclick="setMenuActive('resource')">Resources
+								<ul>
+									<li id="video" class="navitem" onclick="setMenuActive('video')" ><a class="navlnk"  href="/media/video">Videos</a></li>
+									<li id="audio" class="navitem" onclick="setMenuActive('audio')" ><a class="navlnk"  href="/media/audio">Audio</a></li>
+								</ul>
+							</li>
+							<li id="about" class="navitem" onclick="setMenuActive('about')"><a class="navlnk"  href="/about">About</a></li>
+							<li id="logout" class="navitem" ><a class="navlnk"  href="/logout">Logout</a></li>
+							<li></li>
+						</ul>
+				</div>
+				<h2><pre align="center">Verbum Dei </pre></h2>
+				<span  class="clock">{{clock}}</span>
+		</div>
+
+		<div ng-controller="WoGCtrl">
+
+				<br><br>
+				Book:<select ng-model="selBook" ng-options="book.book for book in bookarr  " ng-change="onchgbook();">
+					<option value="">All</option>
+				</select>
+				Chapter:<select ng-model="selChap" ng-options="chap for chap in chapsarr" ng-change="onchgchap();">
+					<option value="">All</option>
+				</select>
+				<p>Search by key-text: <input ng-model="sText" ng-model-options="{updateOn: 'blur'}">
+				<span ng-class="'srchRes'" ng-show="count > 0">Search result yielded {{count}} reference(s).&nbsp;&nbsp;&nbsp;</span>
+				<div  ng-class="'cont1'">
+					<table>
+					<tr ng-repeat="wog in books |  searchMatches:sText | orderBy:['bid','chapter','verse'] as wogResults " >
+						<td>
+							<hr ng-show="wog.book != wogResults[$index-1].book">
+							<header class="bookClass">{{wog.book == wogResults[$index-1].book ? '' : wog.book | uppercase}}</header>
+							<hr ng-show="wog.book != wogResults[$index-1].book">
+							<table style="width:100%;">
+								<tr>
+								<td class="chver" ng-class-odd="'oddRow'" >Ch:{{wog.chapter}}&nbsp;ver:{{wog.verse}}&nbsp;&nbsp;</td>
+								<td  ng-class-odd="'oddRow'" ng-bind-html="wog.text  | highlight:sText ">{{wog.text}}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					</table>
+				</div>
+				<div ng-show="showLoad || hghLoad">
+						<span us-spinner></span>
+				</div>
+
+
+		</div>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+  		<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="/js/angular-spinner.js"></script>
+		<script type="text/javascript" src="/js/app.js"></script>
+		<script type="text/javascript" src="/js/spin.js"></script>
+		<script type="text/javascript" src="/js/controllers/WoGController.js"></script>
+		<script type="text/javascript" src="/js/wogService.js"></script>
+		</div>
+	</body>
+	<br>
+	<footer>
+		<p align='center'>Agnus Dei, have mercy on us.</p>
+	</footer>
+</html>

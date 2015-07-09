@@ -1,0 +1,50 @@
+<html ng-app="wogApp">
+	<head>
+		<title>Passport-Featured</title>
+		<link rel="stylesheet" type="text/css" href="/styles/nav.css">
+	<style>
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+	li {
+		float: left;
+	}
+	.lnkind:link, :visited {
+			display: block;
+			font-weight: bold;
+			color: blue;
+			text-align: left;
+			padding: 4px;
+			text-decoration: none;
+	}
+</style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+	</head>
+	<body ng-controller="indexCtrl">
+			<div id="hdrbar"></div>
+			<br>
+			<h4>MEAN App</h4>
+			<%
+				if(!isAuthenticated){
+			%>
+				<b> Not Authenticated.</b>
+				<a class="lnkind" href="/login">Log in here</a>
+			<% } else{ %>
+				<div ng-include="'/include/navmenu.html'"></div>
+
+				<b> Agnus Dei, have mercy on us. </b><br>
+				<h4> Welcome , <%=user.name%>.
+			<% } %>
+		<script type="text/javascript">
+			var app= angular.module('wogApp',[]);
+			app.controller('indexCtrl', function($scope){
+				console.log('inside indexCtrl..');
+			});
+
+		</script>
+
+	</body>
+</html>

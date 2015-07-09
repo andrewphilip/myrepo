@@ -1,0 +1,46 @@
+<html ng-app="wogApp">
+	<head >
+		<title>Author Page</title>
+		<link rel="stylesheet" type="text/css" href="/styles/nav.css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+		<style>
+			#contentBox {
+				height:20%;
+				width:40%;
+				border: 2px solid gray;
+				margin-left:auto;
+				margin-right:auto;
+				overflow:auto;
+				border-radius:5px;
+				box-shadow: 2px 2px 5px #202020;
+			}
+			h4{
+				background:linear-gradient(white, lightgray);
+				margin-top:0px;
+				position:relative;
+			}
+
+		</style>
+
+	</head>
+	<body ng-controller="aboutCtrl">
+		<div id="hdrbar"></div>
+		<div ng-include="'/include/navmenu.html'"></div>
+		<br>
+		<br>
+		<div id="contentBox">
+			<h4 style="text-align:center;">About Me:</h4>
+			<p>
+				Name: Andrew Philip</br>
+				Email: andrewphilip70@gmail.com
+			</p>
+		</div>
+		<script type="text/javascript">
+			var app= angular.module('wogApp',[]);
+			app.controller('aboutCtrl', function($scope){
+
+			});
+		</script>
+
+	</body>
+</html>

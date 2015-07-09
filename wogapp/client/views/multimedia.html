@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html ng-app="wogApp">
+	<head>
+		<title>Audio-Video Page</title>
+		<link rel="stylesheet" type="text/css" href="/styles/nav.css">
+  		<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+
+		<style>
+			video {
+				transform: scale(2.5,1.5);
+				border: 4px solid gray;
+				margin-top:50px;
+				border-radius:5px;
+				text-align:center;
+			}
+			#contentBox {
+				width:900px;
+				height:300px;
+				margin:0 auto;
+
+			}
+			footer {
+				width: 90%;
+				background: linear-gradient(white, lightgray);
+				margin: 0 0 .5% 0;
+				border-radius: 5px;
+				box-shadow: 5px 5px 10px #202020;
+				text-align:center;
+				text-decoration: none;
+			}
+			#vcontrols{
+				background: linear-gradient(white, lightgray);
+				border-radius: 5px;
+				width:20%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.ctrlcss{
+				border: 1px solid black;
+				border-radius: 5px;
+				background: linear-gradient(white, lightblue);
+				box-shadow: 2px 2px 5px #202020;
+			}
+			#vlist {
+				border:2px solid black;
+				width:98%;
+				height:95%;
+				border-radius: 2px;
+				box-shadow: 2px 2px 5px #202020;
+				overflow:auto;
+			}
+			h4{
+				text-align:center;
+				background-color:lightgray;
+				margin-top:0px;
+				position:relative;
+				color:white;
+			}
+			#mediaCont {
+				overflow:auto;
+				margin-left:auto;
+				margin-right:auto;
+				position:relative;
+			}
+		</style>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+		<script type="text/javascript">
+		  function setMenuActive(obj){
+		 	console.log("inside setMenuActive:"+obj);
+		  	var actEle= obj.id;
+		  	var listEle= $("li.navitem");
+			$.each(listEle,
+					function(idx, e){
+						if(e.id == actEle){
+							console.log(e.id);
+							$(e).css("color", "yellow");
+						}
+						else{
+							$(e).css("color", "white");
+						}
+					}
+			);
+		  }
+
+			function play(){
+				var vid=document.getElementById("woc");
+				vid.play();
+			}
+			function pause(){
+				var vid=document.getElementById("woc");
+				vid.pause();
+			}
+			function restart(){
+				var vid=document.getElementById("woc");
+				vid.currentTime=0;
+				vid.play();
+			}
+			function skip(val){
+				var vid=document.getElementById("woc");
+				vid.currentTime += val;
+				//vid.play();
+			}
+			function loadAndPlay(song){
+				var vid=document.getElementById("woc");
+				vid.src ="/video/"+song;
+				vid.load();
+				vid.play();
+			}
+			function loadAndPlayAud(song){
+				var vid=document.getElementById("auctrl");
+				vid.src ="/audio/"+song;
+				vid.load();
+				vid.play();
+			}
+		</script>
+
+	</head>
+	<body ng-controller="multiCtrl">
+		<div id="hdrbar"><p></p></div>
+		<div ng-include="'/include/navmenu.html'"></div>
+		<br>
+		<br>
+		<div id="mediaCont" ng-show="vid">
+				<table>
+					<tr>
+						<td style="width:25%;height:300px;">
+							<div id="vlist">
+								<h4 style="text-align:center;background-color:gray;">Videos</h4>
+								<ul>
+									<li>Stations-of-the-cross&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('passionofchrist.mp4');">play</button></li>
+									<li>Last-seven-words-of-christ&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('SevenLastWordsofJesus.mp4');">play</button></li>
+									<li>Lenten-practices&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('lentenpractices.mp4');">play</button></li>
+									<li>Fr Robert Barron on Palm Sunday&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('PalmSunday-RB.mp4');">play</button></li>
+									<li>Fr Robert Barron on Eucharist&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('eucharist-RB.mp4');">play</button></li>
+									<li>Dr Scott Hahn on Eucharist&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('eucharist-SH.mp4');">play</button></li>
+									<li>Theology of Mass&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('theologyofmass.mp4');">play</button></li>
+									<li>Meaning of Mass&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('MeaningofMass.mp4');">play</button></li>
+									<li>Genealogy of Christ&nbsp;&nbsp;<button class="ctrlcss" onclick="loadAndPlay('genealogy-RB.mp4');">play</button></li>
+
+								</ul>
+							</div>
+						</td>
+						<td style="width:75%;">
+							<div id="contentBox" align="center" >
+									<video id="woc" width:"225" height="175" >
+										<source src="/video/passionofchrist.mp4" type="video/mp4">
+									</video>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<div id="vcontrols" align="center">
+					<button class="ctrlcss" onclick="restart();">replay</button>
+					<button class="ctrlcss" onclick="skip(-15);">rew</button>
+					<button class="ctrlcss" onclick="play();">play</button>
+					<button class="ctrlcss" onclick="pause();">pause</button>
+					<button class="ctrlcss" onclick="skip(15);">fwd</button>
+				</div>
+		</div>
+
+		<div id="audioCont" ng-hide="vid">
+				<table>
+					<tr>
+						<td style="width:50%;height:300px;">
+							<div id="vlist">
+								<h4 style="text-align:center;background-color:gray;">Audio</h4>
+								<ul>
+
+									<li>Pange Lingua&nbsp;&nbsp;<button  ng-click="playSong('PANGE_LINGUA.mp3','Pange Lingua');">play</button></li>
+									<li>O Salutaris Hostia&nbsp;&nbsp;<button  ng-click="playSong('OSalutarisHostia.mp3','O Salutaris');">play</button></li>
+									<li>O Sacred Head Surrounded&nbsp;&nbsp;<button  ng-click="loadAndPlayAud('OSacredHeadSurrounded.mp3','O Sacred Head');">play</button></li>
+									<li>Shepherd Me O God&nbsp;&nbsp;<button  ng-click="playSong('shepherdmeOGod.mp3','Shepherd me O God');">play</button></li>
+									<li>Christ be our Light&nbsp;&nbsp;<button  ng-click="playSong('christbeourlight.mp3','Christ be or light');">play</button></li>
+									<li>One Bread One Body&nbsp;&nbsp;<button  ng-click="playSong('onebreadonebody.mp3','One Bread One Body');">play</button></li>
+									<li>Servant Song&nbsp;&nbsp;<button  ng-click="playSong('servantsong.mp3','Servant Song');">play</button></li>
+									<li>On Eagles Wings&nbsp;&nbsp;<button  ng-click="playSong('oneagleswings.mp3','On Eagles wings');">play</button></li>
+									<li>Be not Afraid&nbsp;&nbsp;<button  ng-click="playSong('benotafraid.mp3','Be not Afraid');">play</button></li>
+									<li>What wondrous love is this&nbsp;&nbsp;<button  ng-click="playSong('whatwondrouslove.mp3','What wondrous love');">play</button></li>
+									<li>Here I am Lord&nbsp;&nbsp;<button  ng-click="playSong('hereiamlord.mp3','Here I am Lord');">play</button></li>
+									<li>Ave Maria&nbsp;&nbsp;<button  ng-click="playSong('AveMaria.mp3','Ave Maria');">play</button></li>
+									<li>How great thou art&nbsp;&nbsp;<button  ng-click="playSong('howgreatthouart.mp3','How great thou art');">play</button></li>
+									<li>Amazing Grace&nbsp;&nbsp;<button  ng-click="playSong('amazinggrace.mp3','Amazing grace');">play</button></li>
+									<li>Soul of my Saviour&nbsp;&nbsp;<button  ng-click="playSong('soulofmysaviour.mp3','Soul of my Saviour');">play</button></li>
+									<li>Blest are they&nbsp;&nbsp;<button  ng-click="playSong('blestarethey.mp3','Blest are they');">play</button></li>
+									<li>Take and eat&nbsp;&nbsp;<button  ng-click="playSong('takeandeat.mp3','Take and eat');">play</button></li>
+									<li>I am the bread of life&nbsp;&nbsp;<button  ng-click="playSong('iamthebreadoflife.mp3','I am the bread of Life');">play</button></li>
+
+								</ul>
+							</div>
+						</td>
+						<td style="width:50%;">
+							<div  align="center" >
+									<audio id="auctrl" controls>
+										 <source src="/audio/PANGE_LINGUA.mp3" type="audio/mpeg">
+									</audio>
+									<p>Current song: {{playSource}}..</p>
+							</div>
+						</td>
+					</tr>
+				</table>
+
+		</div>
+		<script type="text/javascript">
+
+			var vid=document.getElementById("woc");
+			//vid.controls = true;
+			vid.load();
+			var auid=document.getElementById("auctrl");
+			auid.load();
+
+			var app= angular.module('wogApp',[]);
+			app.controller('multiCtrl', function($scope,$location,$document){
+				$scope.vid=true;
+				$scope.playSource;
+				console.log('inside multiCtrl');
+				console.log(window.location.href);
+				var jsUrl=window.location.href;
+				//var navItems=angular.element(document.querySelector('.navitem'));
+				/*
+
+				var navItems = document.getElementsByClassName('navitem');
+				var menuItems =document.getElementsByClassName('navlnk');
+				//var navItems=angular.element($(this).find('li.navitem a'));
+				//console.log(menuItems[0].innerHTML);
+				console.log(navItems + angular.isArray(navItems));
+				console.log(navItems.length);
+				console.log(document.getElementsByClassName('navlnk'));
+				angular.forEach(angular.element(menuItems),function(node){
+					console.log("**"+node.childNodes[0]);
+				});
+				$scope.setActive = function($event){
+					console.log($event.currentTarget);
+				}
+				*/
+				if(jsUrl.indexOf("video") > 0){
+					$scope.vid=true;
+				}
+				else{
+					$scope.vid=false;
+					$scope.playSource = 'Pange Lingua';  //default
+				}
+
+				$scope.playSong = function(song,title){
+					auid.src ="/audio/"+song;
+					auid.load();
+					auid.play();
+					$scope.playSource = title;
+				}
+			});
+
+		</script>
+
+	</body>
+	<br>
+	<footer>
+		Email: <a style="text-decoration: none;" href="mailto:andrewphilip70@gmail.com">Andrew Philip</a>
+	</footer>
+</html>

@@ -1,0 +1,5 @@
+# command to create self signed certificate.
+openssl req -x509 -nodes -days -365 -newkey rsa:1024 -out andy.crt -keyout andy.key
+
+#javascript function to convert base64 to string
+atob('encoded string here')

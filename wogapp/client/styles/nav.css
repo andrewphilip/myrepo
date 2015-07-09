@@ -1,0 +1,87 @@
+.navlnk:link, :visited {
+		display: block;
+		font-weight: bold;
+		color: #FFFFFF;
+		background-color: #52524E;
+		text-align: center;
+		text-decoration: none;
+		text-transform: uppercase;
+}
+.navlnk:active{
+	color: blue;
+}
+.navlnk:hover{
+		background-color: #1E1E1E;
+}
+
+#navbar {
+				width:45%;
+				/*border: 1px solid gray;*/
+				margin-left:auto;
+				margin-right:auto;
+				margin-top:16px;
+				overflow:auto;
+				/*border-radius:5px;*/
+				/*background-color: #52524E;*/
+				position:relative;
+}
+ul {
+				list-style-type: none;
+				margin: 0 auto;
+				padding: 4px;
+				width:90%;
+}
+.navitem{
+				display: block;
+				float: left;
+				width: 100px;
+				font-weight: bold;
+				color: #FFFFFF;
+				background-color: #52524E;
+				text-align: center;
+				text-decoration: none;
+				text-transform: uppercase;
+				cursor: pointer;
+				padding:0;
+				position:relative;
+				
+}
+.navitem:hover {
+	background-color: #1E1E1E;
+}
+.navitem:hover > ul {
+  display: block;
+  opacity: 1;
+  float:left;
+  visibility: visible;
+}
+.navitem ul li { 
+  background-color: #52524E; 
+  display: block; 
+  color: #FFFFFF;
+  
+}
+.navitem  ul li:hover { background: #1E1E1E; }
+
+.navitem  ul {
+  padding: 2;
+  position: relative;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#hdrbar{
+	height:15px;
+	width:100%;
+	top:0px;
+	left:0px;
+	position:absolute;
+	background:linear-gradient(#FAE6E6, #CC0000);
+}
+body {
+				background: url("/images/crossimg3.jpg");
+				background-repeat:no-repeat;
+				background-position:center;
+				background-size: cover;
+}

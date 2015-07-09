@@ -1,0 +1,49 @@
+ <beans xmlns="http://www.springframework.org/schema/beans" 
+ 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
+   
+   	<bean id="encryptBean" class="andy.bean.StringEncryption">
+   		<property name="text" value="andrew"/>
+   	</bean> 
+   	
+   	<bean id="beforeEncryptBean" class="andy.aop.StringEncryptBeforeInterceptor"/>
+   	<bean id="afterEncryptBean" class="andy.aop.StringEncryptAfterReturning"/>
+   	<bean id="throwEncryptBean" class="andy.aop.StringEncryptThrowingEx"/>
+   	<bean id="aroundEncryptBean" class="andy.aop.StringEncryptAround"/>
+   	
+   	<bean id="encryptPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+   		<property name="mappedName" value="encrypt2MD5"/>
+   	</bean>
+   	
+   	<bean id="encryptAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+   		<property name="pointcut" ref="encryptPointcut" />
+   		<property name="advice" ref="afterEncryptBean"/>
+   	</bean>
+   	
+	<bean id="regexAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="patterns">
+			<list>
+				<value>.*crypt.*</value>
+			</list>
+		</property>
+		<property name="advice" ref="aroundEncryptBean"/>
+	</bean>
+   	
+   	<bean id="encryptBeanProxy" class="org.springframework.aop.framework.ProxyFactoryBean" >
+   		<property name="target" ref="encryptBean"/>
+   		<property name="proxyTargetClass" value="true"/>
+   		<property name="interceptorNames" >
+   			<list>
+   				<!-- 
+   				<value>beforeEncryptBean</value>
+   				<value>afterEncryptBean</value>
+   				<value>throwEncryptBean</value>
+   				<value>regexAdvisor</value>
+   				<value>encryptAdvisor</value>
+   				-->
+   				<value>regexAdvisor</value>
+   				<value>encryptAdvisor</value>
+   			</list>
+   		</property>
+   	</bean>
+ </beans> 

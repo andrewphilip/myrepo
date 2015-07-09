@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script  type="text/javascript" src= "javascripts/angular.min.js"></script>
+	<script type="text/javascript" src= "javascripts/angular-route.min.js"></script>
+	<script type="text/javascript" src= "javascripts/angular-resource.min.js"></script>
+</head>
+<body ng-app="app">
+	<h2>Routing App</h2>
+	
+	<ng-view></ng-view>
+	
+	<script type="text/javascript">
+	
+		var app= angular.module("app", ['ngRoute']);
+		var persons=[
+								{ "id":1, "name":'Alex', "city":'Fairfax'},
+								{"id":2, "name":'Bernard', "city":'Boston'},
+								{"id":3, "name":'Cathy', "city":'Dallas'},
+								{"id":4, "name":'Daniel', "city":'Chicago'},
+								{"id":5, "name":'Eli', "city":'Atlanta'},
+								{"id":6, "name":'Frank', "city":'San Francisco'},
+								{"id":7, "name":'George', "city":'New York'}
+						];
+		
+		app.config(['$routeProvider', '$locationProvider', function($routeProvider,$locationProvider){
+					$locationProvider.hashPrefix('!');
+					$routeProvider.
+						when('/persons',
+							{
+								templateUrl: "partials/persons.html"
+							}
+						).
+						when('/persons/:id',
+							{
+								templateUrl: "partials/person_details.html",
+								controller: "PersonController"
+							}
+						).
+						otherwise({redirectTo:"/persons"});
+
+				}]);
+
+		app.factory('PersonSrvc', function($q){
+						
+			return {
+					
+					getPersons: function(){
+									var deferred = $q.defer();
+									console.log('inside getPersons()');
+									deferred.resolve(persons);	
+									return deferred.promise;
+								},
+								
+					getPerson: function(id){
+									var deferred = $q.defer();
+									console.log('inside getPerson():'+id);
+									for(var i=0; i< persons.length; i++){
+										if(persons[i].id == id){
+											deferred.resolve(persons[i]);
+											return deferred.promise;
+										}
+									}
+									deferred.reject('No data...');
+									console.log('Rejected: No data...');
+									return deferred.promise;
+								}			
+			}
+		});
+		
+		app.controller('PersonController', function($scope, $routeParams, PersonSrvc){
+				PersonSrvc.getPersons().then(
+										function(data){
+											$scope.persons=data;							
+										});
+										
+				PersonSrvc.getPerson($routeParams.id).then(
+										function (data){
+											$scope.person = data;
+										},
+										function(err){
+											console.log('Error occurred:'+err);
+										}
+										);
+			}
+		
+		);
+	</script>
+
+</body>
+</html>

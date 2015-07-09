@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html data-ng-app="personApp">
+	<body>
+		<h4>Persons List:</h4>
+		<div data-ng-controller="personCtrl">
+			<table>
+				<thead>
+					<tr>
+						<th>Firstname</th>
+						<th>Lastname</th>
+						<th>Phone</th>
+						<th>Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="person in persons">
+						<td>{{person.firstName}}</td>
+						<td>{{person.lastName}}</td>
+						<td>{{person.phone}}</td>
+						<td>{{person.email}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div>
+				<h4>New Person Section:</h4>
+					Firstname:
+					<input type="text" data-ng-model="newPerson.firstName"/>
+					<br/>
+					Lastname:
+					<input type="text" data-ng-model="newPerson.lastName"/>
+					<br/>
+					Email:
+					<input type="text" data-ng-model="newPerson.email"/>
+					<br/>
+					Phone:
+					<input type="text" data-ng-model="newPerson.phone"/>
+					<br/>
+					<button data-ng-click="addPerson()">Create</button>
+			</div>
+			
+		</div>
+		<script type="text/javascript" src="js/angular.js"></script>
+		<!-- script type="text/javascript" src="js/angular-route.js"></script -->
+		<script type="text/javascript">
+			var app= angular.module("personApp",[]);
+			app.factory('personFact',function($http,$q){
+				var persons=[];
+				var factory={};
+				var deferred=$q.defer();
+				
+				factory.loadPersons = function(){
+					$http.get("rest/person")
+					 .success(function(data,status,headers,config){
+						 factory.persons=data;
+						 //alert("inside loadPersons()"+factory.persons.length);
+						 deferred.resolve(data);
+						 return deferred.promise;
+					 })
+					.error(function(data,status,headers,config){
+	//						alert(data.message);
+						 deferred.resolve(data);
+						 return deferred.promise;
+					})
+				}
+				/*
+				factory.refresh = function(){
+					loadPersons();
+				}
+				*/
+				
+				factory.addPerson= function(person){
+					$http.post("rest/person/add",person)
+					 .success(function(data,status,headers,config){
+						alert("Successfully added a person.");
+						loadPersons();
+					 })
+					.error(function(data,status,headers,config){
+						alert(data.message);
+					})
+				}
+				
+				return factory;
+			});
+			
+			app.controller("personCtrl",function($scope,$http,$q,personFact){
+				$scope.persons=[];
+				$scope.promise={};
+				init();
+				//alert($scope.persons.length);
+				/*
+				$http.get("rest/person")
+					 .success(function(data,status,headers,config){
+						 $scope.persons=data;
+					 })
+					.error(function(data,status,headers,config){
+						alert(data.message);
+					})
+				*/	
+				
+				function init(){
+					$scope.promise=personFact.loadPersons();
+					$scope.promise.then(function(promise){
+						$scope.persons=promise;	
+					});
+					//alert("init():"+$scope.persons);
+				}
+				
+				function addPerson(){
+					var personJson ={firstName:$scope.newPerson.firstName,
+								 lastName:$scope.newPerson.lastName,
+								 email:$scope.newPerson.email,
+								 phone:$scope.newPerson.phone
+								};
+					personFact.addPerson(personJson);
+				}
+			});
+		</script>
+	</body>
+</html>

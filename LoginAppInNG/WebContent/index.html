@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <title>AngularJS User Registration and Login Example</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+</head>
+<body>
+
+    <div class="jumbotron">
+        <div class="container">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+                <div ng-view></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="javascripts/jquery-2.1.3.min.js"></script>
+    <script src="javascripts/angular.min.js"></script>
+    <script src="javascripts/angular-route.min.js"></script>
+    <script src="javascripts/angular-cookies.min.js"></script>
+
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/services/authService.js"></script>
+    <script src="javascripts/services/flashService.js"></script>
+
+    <!-- Real user service that uses an api -->
+    <!-- <script src="app-services/user.service.js"></script> -->
+
+    <!-- Fake user service for demo that uses local storage -->
+    <script src="javascripts/services/user-storage.js"></script>
+
+    <script src="javascripts/controllers/homeController.js"></script>
+    <script src="javascripts/controllers/loginController.js"></script>
+    <script src="javascripts/controllers/registerController.js"></script>
+
+</body>
+</html>

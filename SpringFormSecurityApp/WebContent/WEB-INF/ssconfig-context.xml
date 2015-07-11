@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/security 
+      http://www.springframework.org/schema/security/spring-security.xsd
+      http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+ 
+   <http auto-config="true" use-expressions="true">
+   	 <!-- 	
+      <intercept-url pattern="/anonymous*" access="isAnonymous()" />
+      <intercept-url pattern="/login*" access="permitAll" />
+      <intercept-url pattern="/**" access="isAuthenticated()"/>
+ 	-->
+
+ 	  <intercept-url pattern="/login*" access="permitAll"/>	
+ 	  <intercept-url pattern="/**" access="isAuthenticated()"/>	
+
+      <form-login
+         login-page='/login.jsp'
+         default-target-url="/home.jsp"
+         authentication-failure-url="/login.jsp"
+         always-use-default-target="true" 
+         />
+ 		
+      	<logout logout-success-url="/login.jsp" invalidate-session="true"/>
+   </http>
+   <authentication-manager>
+   	  <!-- 	
+      <authentication-provider>
+         <user-service>
+            <user name="user1" password="user1Pass" authorities="ROLE_USER" />
+            <user name="user2" password="user2Pass" authorities="ROLE_USER" />
+         </user-service>
+      </authentication-provider>
+      -->
+      
+      <authentication-provider>
+      	<jdbc-user-service data-source-ref="dataSource"
+      						users-by-username-query="select username, password, decode(enabled,'Y',1,0) enable from users where username=?"
+      						authorities-by-username-query="select username, role from user_role where username=?"
+      	/>	
+      	<password-encoder hash="bcrypt"/>
+      </authentication-provider>
+      
+   </authentication-manager>
+   
+   <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+   		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<beans:property name="url" value="jdbc:oracle:thin:@norway.states.bls.gov:1521:lausoned" />
+		<beans:property name="username" value="philip_a" />
+		<beans:property name="password" value="Welcome11$"/>
+   </beans:bean>
+   
+</beans:beans>

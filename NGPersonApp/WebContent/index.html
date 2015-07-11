@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app="personApp">
+<head>
+    <meta charset="utf-8" />
+    <title>Person - CRUD - Angular</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <style>
+    	
+		table, th, td {
+		    border: 2px solid black;
+		    padding:5px;
+		    text-align: center;
+		}
+		
+		.cssOddRow {
+			/* background-color: #FAFAD2;*/
+			background: linear-gradient(white, lightgray); 
+		}
+		
+		.cssEvenRow {
+			background-color: white;
+		}
+		
+		.hdrRow {
+			background: linear-gradient(to bottom, silver,skyblue); 
+			color: #ffffff;
+		}
+		
+		.hdrRow th a:link, th a:visited, th a:hover,th a:active{
+			color: #ffffff;
+			text-decoration: none;
+		}
+		
+		td a:link, a:visited,  a:hover,a:active{
+			color: navy;
+			text-decoration: none;
+		}
+		.addPersonBox{
+			border: 3px solid black;
+			margin:10px;
+			margin-left:auto;
+			margin-right:auto;
+			padding:7px;
+			width: 25%;
+			height:50%;
+			text-align: center;
+			overflow: auto;
+		}
+		.HeaderBar{
+			background: linear-gradient(white, lightgray);
+		}
+    </style>
+</head>
+<body>
+
+	<h2 class="HeaderBar">Person - CRUD- Application</h2>
+	 <div ng-view>
+		<div ng-show="showLoad">
+				<span us-spinner></span>
+				<!-- span us-spinner="{radius:30, width:8, length: 16}"></span -->
+		</div>
+	 </div>
+    <script src="javascripts/angular.min.js"></script>
+    <script src="javascripts/angular-route.min.js"></script>
+    <script src="javascripts/angular-resource.min.js"></script>
+    <script src="javascripts/angular-spinner.js"></script>
+  	<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="javascripts/spin.js"></script>
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/dirPagination.js"></script>
+    <script src="javascripts/services/personService.js"></script>
+    <script src="javascripts/controllers/listController.js"></script>
+    <script src="javascripts/controllers/createController.js"></script>
+    <script src="javascripts/controllers/editController.js"></script>
+    
+	
+</body>
+</html>

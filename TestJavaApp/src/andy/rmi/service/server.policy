@@ -1,0 +1,3 @@
+grant codeBase "file:C:/lunaworkspace/core/ConceptPro/src/expo.jar" {
+	permission  java.security.AllPermission;
+};

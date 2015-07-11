@@ -1,0 +1,28 @@
+<div>
+	<h4>Edit Person:</h4>
+		<form name="personForm" ng-submit="pc.updatePerson()" role="form">
+			<div align="center" ng-class="'addPersonBox'">
+					<div>
+						Firstname:
+						 </span><input type="text" name="firstName" id="firstName" ng-model="pc.person.firstName"  ng-readonly="true">  
+					</div>
+					<div>
+						Lastname:
+						<input type="text" name="lastName" id="lastName" ng-model="pc.person.lastName" required>
+						 <span class="help-block error" ng-show="personForm.lastName.$dirty && personForm.lastName.$error.required" >
+						 Last name is required
+						 </span>
+					</div>
+					<div>
+						City:  
+						<input type="text" name="city" id="city" ng-model="pc.person.city" required>
+						 <span class="help-block error" ng-show="personForm.city.$dirty && personForm.city.$error.required" >
+						 City is required
+						 </span>
+						
+					</div>
+					<button type="submit" >Modify-Person</button>
+			</div>
+			<a href="#/list"  >Back</a>	
+		</form>
+</div>

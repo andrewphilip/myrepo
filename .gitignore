@@ -1,0 +1,5 @@
+# ignores the following
+/target
+.project
+.classpath
+/.settings
